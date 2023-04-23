@@ -1,0 +1,96 @@
+using System;
+using System.Collections.Generic;
+
+namespace TriviaGame
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // Welkomstscherm
+            Console.WriteLine("Welkom bij het trivia spel!");
+            Console.WriteLine("Geef je naam op:");
+            string playerName = Console.ReadLine();
+            Console.WriteLine($"Hallo {playerName}, je bent klaar om te beginnen!");
+
+            // Maak een lijst met vragen
+            List<Question> questions = new List<Question>()
+            {
+                new Question("Wat is de hoofdstad van Nederland?", new List<string>(){ "Amsterdam", "Rotterdam", "Utrecht", "Den Haag" }, 3),
+                new Question("Wat is de hoofdstad van België?", new List<string>(){ "Antwerpen", "Gent", "Brussel", "Leuven" }, 2),
+                new Question("Hoeveel provincies heeft Nederland?", new List<string>(){ "5", "7", "9", "11" }, 3),
+                new Question("Hoeveel landen maken deel uit van de EU?", new List<string>(){ "15", "27", "36", "45" }, 1),
+                new Question("Welke is de belangrijkste stad in Duitsland?", new List<string>(){ "München", "Berlijn", "Hamburg", "Frankfurt" }, 1),
+                new Question("Wat is de hoofdstad van Frankrijk?", new List<string>(){ "Parijs", "Marseille", "Lyon", "Bordeaux" }, 0),
+                new Question("Wat is de hoofdstad van Italië?", new List<string>(){ "Rome", "Milaan", "Genua", "Venetië" }, 0),
+                new Question("Welk land is het grootst (in oppervlakte)?", new List<string>(){ "China", "Verenigde Staten", "Rusland", "India" }, 2),
+                new Question("Welk land is het meest bevolkt?", new List<string>(){ "China", "Verenigde Staten", "Rusland", "India" }, 0),
+                new Question("Wat is de hoofdstad van Spanje?", new List<string>(){ "Barcelona", "Madrid", "Valencia", "Sevilla" }, 1),
+                new Question("Wat is de hoofdstad van Zwitserland?", new List<string>(){ "Bern", "Genève", "Zürich", "Luzern" }, 0),
+                new Question("Wat is de hoofdstad van Portugal?", new List<string>(){ "Porto", "Lissabon", "Coimbra", "Faro" }, 1),
+                new Question("Hoeveel landen maken deel uit van de NAVO?", new List<string>(){ "17", "27", "37", "47" }, 1),
+                new Question("Wat is de hoofdstad van Polen?", new List<string>(){ "Gdańsk", "Kraków", "Warschau", "Poznań" }, 2),
+                new Question("Waar ligt het hoogste punt van Europa?", new List<string>(){ "Alpen", "Pyreneën", "Kaukasus", "Sneeuwberg" }, 2),
+                new Question("Welke land is het kleinste ter wereld?", new List<string>(){ "Monaco", "Vaticaanstad", "San Marino", "Liechtenstein" }, 1),
+                new Question("Wat is de hoofdstad van Zuid-Korea?", new List<string>(){ "Seoel", "Busan", "Daegu", "Incheon" }, 0),
+                new Question("Wat is de hoofdstad van Canada?", new List<string>(){ "Toronto", "Vancouver", "Ottawa", "Montreal" }, 2),
+                new Question("Wat is de hoofdstad van Australië?", new List<string>(){ "Sydney", "Melbourne", "Brisbane", "Canberra" }, 3),
+                new Question("Wat is de hoofdstad van Argentinië?", new List<string>(){ "Buenos Aires", "Córdoba", "Rosario", "Mendoza" }, 0),
+            };
+
+            // Maak een lijst met de vragen in willekeurige volgorde
+            Random random = new Random();
+            List<Question> shuffledQuestions = questions.OrderBy(x => random.Next()).ToList();
+
+            // Maak een variabele om de score bij te houden
+            int score = 0;
+
+            // Start het spel
+            Console.WriteLine("Laten we beginnen!");
+            foreach (Question q in shuffledQuestions)
+            {
+                Console.WriteLine($"Vraag: {q.Text}");
+                for (int i = 0; i < q.Answers.Count; i++)
+                {
+                    Console.WriteLine($"{i + 1}: {q.Answers[i]}");
+                }
+
+                Console.WriteLine("Geef het antwoord (1, 2, 3 of 4):");
+                int answer = int.Parse(Console.ReadLine());
+                if (answer == q.CorrectAnswerIndex + 1)
+                {
+                    Console.WriteLine("Goed gedaan!");
+                    score++;
+                }
+                else
+                {
+                    Console.WriteLine("Helaas, dat is onjuist.");
+                }
+            }
+
+            Console.WriteLine($"{playerName}, je hebt {score}/{questions.Count} goed beantwoord.");
+
+            // Geef de speler de optie om het spel opnieuw te starten
+            Console.WriteLine("Wil je het spel opnieuw spelen? (j/n)");
+            string restart = Console.ReadLine().ToLower();
+            if (restart == "j")
+            {
+                Main(args);
+            }
+        }
+    }
+
+    public class Question
+    {
+        public string Text { get; set; }
+        public List<string> Answers { get; set; }
+        public int CorrectAnswerIndex { get; set; }
+
+        public Question(string text, List<string> answers, int correctAnswerIndex)
+        {
+            Text = text;
+            Answers = answers;
+            CorrectAnswerIndex = correctAnswerIndex;
+        }
+    }
+}
